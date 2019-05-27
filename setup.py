@@ -32,6 +32,7 @@ DEBUG_REQUIRED = [
 
 CODE_QUALITY_REQUIRED = [
     'autopep8>=1.4.4',
+    'mock>=3.0.5',
     'nose>=1.3.7',
     'pudb>=2019.1',
     'pycodestyle>=2.5.0',
