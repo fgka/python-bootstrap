@@ -37,7 +37,8 @@ def test_main_ok(_):
         log_level=expected_log_level, cmd=expected_cmd)
 
 
-MOCK_PATH_MY_PROG_RUN_CMD = '.'.join([my_prog.__name__, my_prog._run_cmd.__name__])
+MOCK_PATH_MY_PROG_RUN_CMD = '.'.join([my_prog.__name__,
+                                      my_prog._run_cmd.__name__])
 
 
 @mock.patch(MOCK_PATH_MY_PROG_RUN_CMD)
@@ -59,7 +60,8 @@ def test__run_cmd_nok_invalid_cmd(cmd_arg: str):
         my_prog._run_cmd(cmd_arg)
 
 
-MOCK_PATH_RUN_SUBPROCESS = '.'.join([my_prog.__name__, my_prog._run_subprocess.__name__])
+MOCK_PATH_RUN_SUBPROCESS = '.'.join([my_prog.__name__,
+                                     my_prog._run_subprocess.__name__])
 
 
 def test__run_cmd_nok_proc_raises_exception(mocker):
