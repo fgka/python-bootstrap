@@ -65,3 +65,9 @@ Install packages:
 python setup.py develop
 ```
 
+### Auto-formatting with black
+
+In this project black was chosen for the auto-formatter.
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+

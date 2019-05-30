@@ -13,10 +13,9 @@ import pytest
 from py_prod_bootstrap import my_prog
 
 
-MOCK_PATH_EXPANDED_MAIN = '.'.join([
-    my_prog.__name__,
-    my_prog._expanded_main.__name__
-])
+MOCK_PATH_EXPANDED_MAIN = '.'.join(
+    [my_prog.__name__, my_prog._expanded_main.__name__]
+)
 
 
 @mock.patch(MOCK_PATH_EXPANDED_MAIN)
@@ -26,19 +25,23 @@ def test_main_ok(_):
     expected_cmd = 'test_cmd'
     sys.argv = [
         'test_expanded_main',
-        my_prog.CLI_ARG_LOG_LEVEL, expected_log_level,
-        my_prog.CLI_ARG_CMD, expected_cmd
+        my_prog.CLI_ARG_LOG_LEVEL,
+        expected_log_level,
+        my_prog.CLI_ARG_CMD,
+        expected_cmd,
     ]
     # when
     my_prog.main()
     # then
     # pylint: disable=no-member
     my_prog._expanded_main.assert_called_once_with(
-        log_level=expected_log_level, cmd=expected_cmd)
+        log_level=expected_log_level, cmd=expected_cmd
+    )
 
 
-MOCK_PATH_MY_PROG_RUN_CMD = '.'.join([my_prog.__name__,
-                                      my_prog._run_cmd.__name__])
+MOCK_PATH_MY_PROG_RUN_CMD = '.'.join(
+    [my_prog.__name__, my_prog._run_cmd.__name__]
+)
 
 
 @mock.patch(MOCK_PATH_MY_PROG_RUN_CMD)
@@ -60,8 +63,9 @@ def test__run_cmd_nok_invalid_cmd(cmd_arg: str):
         my_prog._run_cmd(cmd_arg)
 
 
-MOCK_PATH_RUN_SUBPROCESS = '.'.join([my_prog.__name__,
-                                     my_prog._run_subprocess.__name__])
+MOCK_PATH_RUN_SUBPROCESS = '.'.join(
+    [my_prog.__name__, my_prog._run_subprocess.__name__]
+)
 
 
 def test__run_cmd_nok_proc_raises_exception(mocker):
@@ -86,8 +90,9 @@ def test__run_cmd_ok(mocker, return_code: int):
     stdout = b'TEST_STDOUT'
     stderr = b'TEST_STDERR'
     #
-    with mocker.patch(MOCK_PATH_RUN_SUBPROCESS,
-                      return_value=(return_code, stdout, stderr)):
+    with mocker.patch(
+        MOCK_PATH_RUN_SUBPROCESS, return_value=(return_code, stdout, stderr)
+    ):
         with mocker.patch(MOCK_PATH_LOG_BYTES):
             # when
             result = my_prog._run_cmd(cmd)

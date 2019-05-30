@@ -31,11 +31,10 @@ DEBUG_REQUIRED = [
 ]
 
 CODE_QUALITY_REQUIRED = [
-    'autopep8>=1.4.4',
+    'black>=19.3b0',
     'mock>=3.0.5',
     'nose>=1.3.7',
     'pudb>=2019.1',
-    'pycodestyle>=2.5.0',
     'pylama>=7.7.1',
     'pylama-pylint>=3.1.1',
     'pylint>=2.3.1',
@@ -96,7 +95,7 @@ setup(
     # },
     install_requires=REQUIRED_PACKAGES,
     include_package_data=True,
-    license='Amazon',
+    license='MIT',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
