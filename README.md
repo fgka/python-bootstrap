@@ -69,5 +69,31 @@ python setup.py develop
 
 In this project black was chosen for the auto-formatter.
 
+There is bug in the current version of black (19.3b0) and the recommendation is to use version ``18.9b0``.
+See details at [https://github.com/python/black/issues/730](https://github.com/python/black/issues/730).
+
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
+#### Install black with vim
+
+After following the instructions I have in my ``~/.vimrc`` the following:
+
+```vimrc
+" black formatter
+let g:black_linelength=79
+let g:black_skip_string_normalization=1
+autocmd BufWritePre *.py execute ':Black'
+```
+
+But had to hand pick the version after issuing ``vim`` at least once.
+
+```bash
+cd ${HOME}/.vim/bundle/black/plugin/
+ls -la # check for .venv
+
+. .venv/bin/activate
+pip3 install -U pip black==18.9b0
+deactivate
+```
+
+Now you can open vim and have black formatter working.
