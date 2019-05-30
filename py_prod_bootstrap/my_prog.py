@@ -6,18 +6,82 @@
 Runs a shell command.
 """
 
-import logging
 import os
 import subprocess
 import typing
-
-LOGGER = logging.getLogger(__name__)
+import argparse
+import logging
+import sys
 
 STDOUT_LOG_LEVEL = logging.INFO
 STDERR_LOG_LEVEL = logging.ERROR
 
+LOGGER = logging.getLogger(__name__)
+DEFAULT_LOG_LEVEL = logging.getLevelName(logging.INFO)
+DEFAULT_LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - ' \
+                     '%(filename)s:%(lineno)d - %(message)s'
 
-def main(cmd: str) -> int:
+CLI_ARG_LOG_LEVEL = '--log-level'
+CLI_ARG_CMD = '--cmd'
+
+
+def main() -> int:
+    """
+    Entry point to be called by :py:func:`__main__`.
+    :rtype: int
+    :returns: The resulting value from executing the desired command.
+    """
+    _set_root_logger()
+    parser = _create_parser()
+    args = parser.parse_args()
+    #
+    _expanded_main(**vars(args))
+
+
+def _set_root_logger(log_level: int = DEFAULT_LOG_LEVEL,
+                     log_format: str = DEFAULT_LOG_FORMAT) -> None:
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(log_level)
+    handler.setFormatter(logging.Formatter(log_format))
+    logging.getLogger().addHandler(handler)
+
+
+def _create_parser() -> argparse.ArgumentParser:
+    # description
+    result = argparse.ArgumentParser(
+        description='Example executable entry point.')
+    # arguments
+    result.add_argument(CLI_ARG_LOG_LEVEL,
+                        help='Defines the minimum log level.',
+                        default=DEFAULT_LOG_LEVEL)
+    result.add_argument(CLI_ARG_CMD,
+                        help='Which shell command to run.',
+                        required=True)
+    #
+    return result
+
+
+def _expanded_main(log_level: str, cmd: str) -> int:
+    """
+    Just a wrapper that consumes system level settings, applies them, \
+            and calls :py:func:`my_prog.main`.
+
+    :param str log_level: Sets the log level to be used, including root logger.
+    :param str cmd: Wich command to be run by :py:func:`my_prog.main`.
+    :rtype: int
+    :returns: The return code on the shell command exectution.
+    """
+    # set log level
+    LOGGER.setLevel(log_level.upper())
+    # set global level
+    logging.getLogger().setLevel(LOGGER.level)
+    #
+    LOGGER.info('Running %s(%s)', __name__, locals())
+    # call actual logic
+    return _run_cmd(cmd.strip())
+
+
+def _run_cmd(cmd: str) -> int:
     """
     :param str cmd: Which shell command to run.
     :rtype: int
@@ -30,7 +94,7 @@ def main(cmd: str) -> int:
         raise ValueError('The argument {} needs to be given. '
                          'Got: {}'.format(locals(), actual_cmd))
     # call it
-    ret_code, stdout, stderr = _run_cmd(actual_cmd)
+    ret_code, stdout, stderr = _run_subprocess(actual_cmd)
     #
     _log_bytes(stdout, STDOUT_LOG_LEVEL)
     _log_bytes(stderr, STDERR_LOG_LEVEL)
@@ -43,7 +107,7 @@ def main(cmd: str) -> int:
 
 
 # pylint: disable=broad-except
-def _run_cmd(cmd: str) -> typing.Tuple[int, bytes, bytes]:
+def _run_subprocess(cmd: str) -> typing.Tuple[int, bytes, bytes]:
     try:
         proc = subprocess.Popen(cmd.split(' '),
                                 stdout=subprocess.PIPE,
