@@ -20,18 +20,24 @@ AUTHOR = 'Gustavo Kuhn Andriotti'
 # https://devguide.python.org/#branchstatus
 REQUIRES_PYTHON = '>=3.7.0'  # End-of-life: 2023-06-27
 VERSION = 0.1
+CLASSIFIERS = [
+    # Trove classifiers
+    # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    'License :: OSI Approved :: The MIT License (MIT)'
+    'Development Status :: 3 - Alpha',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.7',
+    'Operating System :: OS Independent',
+]
 
 # What packages are required for this module to be executed?
-REQUIRED = [
-    'deepdiff>=4.0.6',
-]
+INSTALL_REQUIRED = ['deepdiff>=4.0.6']
 
-DEBUG_REQUIRED = [
-    'ipython>=7.5.0',
-]
+DEBUG_REQUIRED = ['ipython>=7.5.0']
 
 CODE_QUALITY_REQUIRED = [
-    'black>=19.3b0',
+    'black==18.9b0',  # bug with vim plugin in version 19.3b0
     'mock>=3.0.5',
     'nose>=1.3.7',
     'pudb>=2019.1',
@@ -48,14 +54,12 @@ CODE_QUALITY_REQUIRED = [
 ]
 
 # What packages are required for this module's docs to be built
-DOCS_REQUIRED = [
-    'Sphinx>=2.0.1',
-]
+DOCS_REQUIRED = ['Sphinx>=2.0.1']
 
-REQUIRED_PACKAGES = REQUIRED \
-        + DEBUG_REQUIRED \
-        + CODE_QUALITY_REQUIRED \
-        + DOCS_REQUIRED
+EXTRA_REQUIRED = {'docs': DOCS_REQUIRED, 'tests': CODE_QUALITY_REQUIRED}
+EXTRA_REQUIRED['dev'] = (
+    EXTRA_REQUIRED['docs'] + EXTRA_REQUIRED['tests'] + DEBUG_REQUIRED
+)
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
@@ -84,26 +88,11 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
-    setup_requires=['pytest-runner', 'pytest-pylint', 'pytest-cov'],
-    tests_require=['pytest', 'pylint'],
     url=URL,
-    packages=find_packages(exclude=('tests',)),
-    # If your package is a single module, use this instead of 'packages':
-    # py_modules=['mypackage'],
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
-    install_requires=REQUIRED_PACKAGES,
+    install_requires=INSTALL_REQUIRED,
+    extras_requires=EXTRA_REQUIRED,
     include_package_data=True,
     license='MIT',
-    classifiers=[
-        # Trove classifiers
-        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'License :: OSI Approved :: The MIT License (MIT)'
-        'Development Status :: 3 - Alpha',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Operating System :: OS Independent',
-    ],
+    packages=find_packages(exclude=('tests',)),
+    classifiers=CLASSIFIERS,
 )
