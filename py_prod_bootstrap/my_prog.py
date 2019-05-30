@@ -73,9 +73,9 @@ def _expanded_main(log_level: str, cmd: str) -> int:
             and calls :py:func:`my_prog.main`.
 
     :param str log_level: Sets the log level to be used, including root logger.
-    :param str cmd: Wich command to be run by :py:func:`my_prog.main`.
+    :param str cmd: Which command to be run by :py:func:`my_prog.main`.
     :rtype: int
-    :returns: The return code on the shell command exectution.
+    :returns: The return code on the shell command execution.
     """
     # set log level
     LOGGER.setLevel(log_level.upper())
@@ -91,7 +91,7 @@ def _run_cmd(cmd: str) -> int:
     """
     :param str cmd: Which shell command to run.
     :rtype: int
-    :returns: The return code on the shell command exectution.
+    :returns: The return code on the shell command execution.
     """
     LOGGER.info('Running %s(%s)', __name__, locals())
     actual_cmd = cmd.strip() if cmd else cmd
