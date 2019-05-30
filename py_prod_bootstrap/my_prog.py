@@ -6,12 +6,12 @@
 Runs a shell command.
 """
 
-import os
-import subprocess
-import typing
 import argparse
 import logging
+import os
+import subprocess
 import sys
+import typing
 
 STDOUT_LOG_LEVEL = logging.INFO
 STDERR_LOG_LEVEL = logging.ERROR
