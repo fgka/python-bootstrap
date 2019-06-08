@@ -90,7 +90,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     install_requires=INSTALL_REQUIRED,
-    extras_requires=EXTRA_REQUIRED,
+    extras_require=EXTRA_REQUIRED,
     include_package_data=True,
     license='MIT',
     packages=find_packages(exclude=('tests',)),

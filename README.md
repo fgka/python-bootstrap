@@ -62,7 +62,7 @@ python3 --version
 
 Install packages:
 ```bash
-python setup.py develop
+pip install ".[dev]"
 ```
 
 ### Auto-formatting with black
