@@ -89,10 +89,9 @@ def test__run_cmd_ok(mocker, return_code: int):
     cmd = 'my_test_cmd'
     stdout = b'TEST_STDOUT'
     stderr = b'TEST_STDERR'
+    return_value = (return_code, stdout, stderr)
     #
-    with mocker.patch(
-        MOCK_PATH_RUN_SUBPROCESS, return_value=(return_code, stdout, stderr)
-    ):
+    with mocker.patch(MOCK_PATH_RUN_SUBPROCESS, return_value=return_value):
         with mocker.patch(MOCK_PATH_LOG_BYTES):
             # when
             result = my_prog._run_cmd(cmd)

@@ -83,7 +83,7 @@ def _expanded_main(log_level: str, cmd: str) -> int:
     # set global level
     logging.getLogger().setLevel(LOGGER.level)
     #
-    LOGGER.info('Running %s(%s)', __name__, locals())
+    LOGGER.info(f'Running {__name__}({locals()})')
     # call actual logic
     return _run_cmd(cmd.strip())
 
@@ -94,13 +94,12 @@ def _run_cmd(cmd: str) -> int:
     :rtype: int
     :returns: The return code on the shell command execution.
     """
-    LOGGER.info('Running %s(%s)', __name__, locals())
+    LOGGER.info(f'Running {__name__}({locals()})')
     actual_cmd = cmd.strip() if cmd else cmd
     # validate input
     if not actual_cmd:
         raise ValueError(
-            'The argument {} needs to be given. '
-            'Got: {}'.format(locals(), actual_cmd)
+            f'The argument {locals()} needs to be given. Got: {actual_cmd}'
         )
     # call it
     ret_code, stdout, stderr = _run_subprocess(actual_cmd)
@@ -110,9 +109,8 @@ def _run_cmd(cmd: str) -> int:
     #
     if ret_code != 0:
         LOGGER.warning(
-            'Command [%s] did not succeed (return code %d), ' 'check logs',
-            actual_cmd,
-            ret_code,
+            f'Command [{actual_cmd}] did not succeed '
+            '(return code {ret_code}), check logs'
         )
     #
     return ret_code
@@ -125,14 +123,12 @@ def _run_subprocess(cmd: str) -> typing.Tuple[int, bytes, bytes]:
             cmd.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
     except Exception as ex:
-        LOGGER.fatal('Could not execute [%s]. Exception: %s', cmd, ex)
+        LOGGER.fatal(f'Could not execute [{cmd}]. Exception: {ex}')
         raise ex
     try:
         stdout, stderr = proc.communicate()
     except Exception as ex:
-        LOGGER.fatal(
-            'Could not retrieve outputs for [%s]. Exception: %s', cmd, ex
-        )
+        LOGGER.fatal('Could not retrieve outputs for [{cmd}]. Exception: {ex}')
     return proc.returncode, stdout, stderr
 
 
