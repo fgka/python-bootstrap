@@ -53,6 +53,10 @@ CODE_QUALITY_REQUIRED = [
     'vulture>=1.0',
 ]
 
+SETUP_REQUIRED = [
+    'pytest-runner>=5.1',
+]
+
 # What packages are required for this module's docs to be built
 DOCS_REQUIRED = ['Sphinx>=2.0.1']
 
@@ -90,6 +94,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     install_requires=INSTALL_REQUIRED,
+    setup_requires=SETUP_REQUIRED,
     extras_require=EXTRA_REQUIRED,
     include_package_data=True,
     license='MIT',
