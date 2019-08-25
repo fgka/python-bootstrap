@@ -76,8 +76,8 @@ def test__run_cmd_nok_proc_raises_exception(mocker):
         with pytest.raises(RuntimeError) as ex:
             # when
             my_prog._run_cmd('test')
-            # then
-            assert ex.message == message
+        # then
+        assert str(ex.value) == message
 
 
 MOCK_PATH_LOG_BYTES = '.'.join([my_prog.__name__, my_prog._log_bytes.__name__])
